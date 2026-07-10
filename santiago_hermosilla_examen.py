@@ -43,7 +43,7 @@ def unidades_categoria(x, dic_prod, dic_stock):
 def busqueda_precio(min, max, dic_prod, dic_stock):
     lista_productos = []
     for clave, valor in dic_stock.items():
-        if min < valor[0] < max and valor[1] > 0:
+        if min <= valor[0] <= max and valor[1] > 0:
             producto_añadir = dic_prod[clave][0] + "--" + clave
             lista_productos.append(producto_añadir)
     if len(lista_productos) == 0:
@@ -52,7 +52,20 @@ def busqueda_precio(min, max, dic_prod, dic_stock):
         lista_ordenada = sorted(lista_productos)
         print(lista_ordenada)
 
+#Función de verificación de código.
+def buscar_codigo(x, dic_prod):
+    for clave in dic_prod.keys():
+        if x == clave:
+            return True
+    return False
 
+#Función para cambio de precio.
+def actualizar_precio(x, valor, dic_prod):
+    if buscar_codigo(x, dic_prod):
+        print("hola")
+        stock[x][0] = valor
+        return True
+    return False
 while True:
 # String para imprimir como menú.
     menu = '''========== MENÚ PRINCIPAL ==========
@@ -83,3 +96,23 @@ while True:
                 else:
                     busqueda_precio(p_min,p_max,productos,stock)
                     break
+    elif opcion == 3:
+        while True:
+            codigo = input("Ingrese código de producto a actualizar: ").upper()
+            if buscar_codigo(codigo, productos):
+                try:
+                    nuevo_precio = int(input("Ingrese el nuevo precio a asignar: "))
+                except:
+                    print("Debe ingresar un precio válido.")
+                    continue
+                else:
+                    if actualizar_precio(codigo, nuevo_precio, productos):
+                        print("Precio actualizado.")
+                    else:
+                        print("El código no existe.")
+                    seguir = input("¿Desea actualizar otro precio (s/n)?: ")
+                    if seguir == "s":
+                        continue
+                    else:
+                        break
+
