@@ -50,7 +50,7 @@ def busqueda_precio(min, max, dic_prod, dic_stock):
         print("No hay productos en ese rango de precios.")
     else:
         lista_ordenada = sorted(lista_productos)
-        print(lista_ordenada)
+        print(f"Los productos encontrados son: {lista_ordenada}")
 
 #Función de verificación de código.
 def buscar_codigo(x, dic_prod):
@@ -94,14 +94,14 @@ def ver_peso(x):
         return False
 def ver_importado(x):
     if x == "s":
-        return True
+        x == True
     else:
-        return False
+        x == False
 def ver_cachorro(x):
     if x == "s":
-        return True
+        x == True
     else:
-        return False
+        x == False
 def ver_precio(x):
     try:
         x = int(x)
@@ -126,7 +126,14 @@ def agregar_producto(codigo,nombre,categoria,marca,peso_kg,es_importado,es_para_
     productos[codigo] = [nombre, categoria,marca,float(peso_kg),es_importado,es_para_cachorro]
     stock[codigo] = [int(precio),int(unidades)]
     return True
-
+#Funcion para eliminar producto
+def eliminar_producto(x, dic_prod):
+    if buscar_codigo(x,dic_prod):
+        del productos[x]
+        del stock[x]
+        return True
+    else:
+        return False
 while True:
 # String para imprimir como menú.
     menu = '''========== MENÚ PRINCIPAL ==========
@@ -176,7 +183,7 @@ while True:
                 else:
                     break
     elif opcion == 4:
-        codigo = input("Ingrese el código: ").upper()
+        codigo = input("Ingrese el código: ").upper().strip()
         nombre = input("Ingrese el nombre: ")
         categoria = input("Ingrese la categoría: ")
         marca = input("Ingrese la marca: ")
@@ -185,8 +192,17 @@ while True:
         es_para_cachorro = input("¿Es para cachorro?(s/n): ")
         precio = input("Ingrese el precio: ")
         unidades = input("Ingrese las unidades: ")
-        if not ver_codigo(codigo, productos) or not ver_nombre(nombre) or not ver_categoria(categoria) or not ver_marca(marca) or not ver_peso(peso_kg) or not ver_importado(es_importado) or not ver_cachorro(es_para_cachorro) or not ver_precio(precio) or not ver_unidades(unidades):
+        if not ver_codigo(codigo, productos) or not ver_nombre(nombre) or not ver_categoria(categoria) or not ver_marca(marca) or not ver_peso(peso_kg) or not ver_precio(precio) or not ver_unidades(unidades):
             print("El codigo ya existe o un dato no fue ingresado correctamente")
         else:
             if agregar_producto(codigo,nombre,categoria,marca,peso_kg,es_importado,es_para_cachorro,precio,unidades):
                 print("Producto agregado.")
+    elif opcion == 5:
+        cod_eliminar = input("Ingrese el código del producto a eliminar: ").strip().upper()
+        if eliminar_producto(cod_eliminar,productos):
+            print("Producto eliminado.")
+        else:
+            print("El codigo no existe.")
+    elif opcion == 6:
+        print("Programa finalizado.")
+        break
