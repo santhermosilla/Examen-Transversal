@@ -24,10 +24,10 @@ def leer_opcion():
     try:
         opcion = int(input("Su opción: "))
     except:
-        print("Debe elegir una opción válida")
+        print("Debe elegir una opción válida.")
     else:
         if opcion < 1 or opcion > 6:
-            print("Debe elegir una opción válida")
+            print("Debe elegir una opción válida.")
         else:
             return opcion
 
@@ -37,8 +37,22 @@ def unidades_categoria(x, dic_prod, dic_stock):
     for clave, valor in dic_prod.items():
         if valor[1] == x:
             total_stock += dic_stock[clave][1]
-    print(f"El stock total en la categoria {x} es: {total_stock}")
-    
+    print(f"El stock total en la categoria {x} es: {total_stock}.")
+
+#Función para busqueda de productos según un rango de precio dado por el usuario.
+def busqueda_precio(min, max, dic_prod, dic_stock):
+    lista_productos = []
+    for clave, valor in dic_stock.items():
+        if min < valor[0] < max and valor[1] > 0:
+            producto_añadir = dic_prod[clave][0] + "--" + clave
+            lista_productos.append(producto_añadir)
+    if len(lista_productos) == 0:
+        print("No hay productos en ese rango de precios.")
+    else:
+        lista_ordenada = sorted(lista_productos)
+        print(lista_ordenada)
+
+
 while True:
 # String para imprimir como menú.
     menu = '''========== MENÚ PRINCIPAL ==========
@@ -55,3 +69,17 @@ while True:
     if opcion == 1:
         categoria = input("Indique la categoría a buscar: ").lower().strip()
         unidades_categoria(categoria, productos, stock)
+    elif opcion == 2:
+        while True:
+            try:
+                p_min = int(input("Ingrese el valor mínimo: "))
+                p_max = int(input("Ingrese el valor máximo: "))
+            except:
+                print("Debe ingresar valores enteros.")
+            else:
+                if p_min < 0 or p_max < 0 or p_min > p_max:
+                    print("Debe ingresar un rango de valores válido.")
+                    continue
+                else:
+                    busqueda_precio(p_min,p_max,productos,stock)
+                    break
